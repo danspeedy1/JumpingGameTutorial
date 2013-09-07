@@ -14,8 +14,7 @@ import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.ui.activity.BaseGameActivity;
 
-import android.graphics.Point;
-import android.view.Display;
+import android.util.DisplayMetrics;
 
 import com.gamedev.manager.ResourcesManager;
 import com.gamedev.manager.SceneManager;
@@ -24,15 +23,17 @@ public class GameActivity extends BaseGameActivity {
 
 	private Camera camera;
 	private ResourcesManager resourcesManager;
-	private Point screenSize;
 
 	@Override
 	public EngineOptions onCreateEngineOptions() {
-		final Display display = getWindowManager().getDefaultDisplay();
-		screenSize = new Point();
-		display.getSize(screenSize);
-		camera = new Camera(0, 0, screenSize.x, screenSize.y);
-		EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(screenSize.x, screenSize.y), this.camera);
+
+		DisplayMetrics metrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+		int widthPixels = metrics.widthPixels;
+		int heightPixels = metrics.heightPixels;
+		camera = new Camera(0, 0, widthPixels, heightPixels);
+		EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(widthPixels, heightPixels), this.camera);
 		engineOptions.getAudioOptions().setNeedsMusic(true).setNeedsSound(true);
 		engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
 		return engineOptions;
