@@ -52,14 +52,14 @@ public class GameActivity extends BaseGameActivity {
 	}
 
 	@Override
-	public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) throws Exception {
+	public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) {
 		ResourcesManager.prepareManager(mEngine, this, camera, getVertexBufferObjectManager());
 		resourcesManager = ResourcesManager.getInstance();
 		pOnCreateResourcesCallback.onCreateResourcesFinished();
 	}
 
 	@Override
-	public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) throws Exception {
+	public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
 		SceneManager.getInstance().createSplashScene(pOnCreateSceneCallback);
 	}
 
