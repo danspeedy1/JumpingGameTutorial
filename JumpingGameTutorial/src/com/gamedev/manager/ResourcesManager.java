@@ -95,6 +95,10 @@ public class ResourcesManager {
 		menuTextureAtlas.load();
 	}
 
+	public void unloadGameTextures() {
+		// TODO (Since we did not create any textures for game scene yet)
+	}
+
 	private void loadMenuFonts() {
 		FontFactory.setAssetBasePath("fonts/");
 		final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);

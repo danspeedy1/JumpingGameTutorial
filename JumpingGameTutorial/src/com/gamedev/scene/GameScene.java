@@ -11,6 +11,7 @@ import org.andengine.util.color.Color;
 
 import com.badlogic.gdx.math.Vector2;
 import com.gamedev.base.BaseScene;
+import com.gamedev.manager.SceneManager;
 import com.gamedev.manager.SceneManager.SceneType;
 
 public class GameScene extends BaseScene {
@@ -29,8 +30,7 @@ public class GameScene extends BaseScene {
 
 	@Override
 	public void onBackKeyPressed() {
-		// TODO Auto-generated method stub
-
+		SceneManager.getInstance().loadMenuScene(engine);
 	}
 
 	@Override
@@ -40,8 +40,11 @@ public class GameScene extends BaseScene {
 
 	@Override
 	public void disposeScene() {
-		// TODO Auto-generated method stub
+		camera.setHUD(null);
+		camera.setCenter(400, 240);
 
+		// TODO code responsible for disposing scene
+		// removing all game scene objects.
 	}
 
 	private void createBackground() {
