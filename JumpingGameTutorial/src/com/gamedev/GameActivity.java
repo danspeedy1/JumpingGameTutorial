@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.LimitedFPSEngine;
-import org.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.engine.options.EngineOptions;
@@ -21,7 +21,7 @@ import com.gamedev.manager.SceneManager;
 
 public class GameActivity extends BaseGameActivity {
 
-	private Camera camera;
+	private BoundCamera camera;
 	private ResourcesManager resourcesManager;
 
 	@Override
@@ -32,7 +32,7 @@ public class GameActivity extends BaseGameActivity {
 
 		int widthPixels = metrics.widthPixels;
 		int heightPixels = metrics.heightPixels;
-		camera = new Camera(0, 0, widthPixels, heightPixels);
+		camera = new BoundCamera(0, 0, widthPixels, heightPixels);
 		EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(widthPixels, heightPixels), this.camera);
 		engineOptions.getAudioOptions().setNeedsMusic(true).setNeedsSound(true);
 		engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);

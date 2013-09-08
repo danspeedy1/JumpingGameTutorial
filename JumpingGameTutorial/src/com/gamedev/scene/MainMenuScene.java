@@ -27,6 +27,7 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 
 	@Override
 	public void onBackKeyPressed() {
+		System.out.println("HELLO");
 	}
 
 	@Override

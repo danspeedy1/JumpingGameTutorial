@@ -16,9 +16,6 @@
 			<accessrule kind="nonaccessible" pattern="com/android/internal/**"/>
 		</accessrules>
 	</classpathentry>
-	<classpathentry kind="lib" path="/AndEngineScriptingExtensionGenerator/lib/android.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/dpalmer/git/AndEnginePhysicsBox2DExtension/bin/andenginephysicsbox2dextension.jar" sourcepath="/AndEnginePhysicsBox2DExtension/src"/>
 	<classpathentry kind="src" path="/AndEngineAugmentedRealityExtension"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/dpalmer/git/AndEngine/bin/andengine.jar" sourcepath="/AndEngine/src"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
