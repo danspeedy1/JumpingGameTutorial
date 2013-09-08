@@ -18,6 +18,7 @@ import android.util.DisplayMetrics;
 
 import com.gamedev.manager.ResourcesManager;
 import com.gamedev.manager.SceneManager;
+import com.gamedev.scene.GameScene;
 
 public class GameActivity extends BaseGameActivity {
 
@@ -55,6 +56,7 @@ public class GameActivity extends BaseGameActivity {
 	public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) {
 		ResourcesManager.prepareManager(mEngine, this, camera, getVertexBufferObjectManager());
 		resourcesManager = ResourcesManager.getInstance();
+		GameScene.context = this;
 		pOnCreateResourcesCallback.onCreateResourcesFinished();
 	}
 

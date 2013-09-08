@@ -37,8 +37,8 @@ public class TiltScreenActivity extends BaseGameActivity implements IOnSceneTouc
 	private SensorManager sensorManager;
 	private PhysicsWorld myPhysicsWorld;
 
-	private final static int CAMERA_WIDTH = 1024;
-	private final static int CAMERA_HEIGHT = 600;
+	private final static int CAMERA_WIDTH = 1280;
+	private final static int CAMERA_HEIGHT = 720;
 
 	private Sprite mySprite;
 	private Body mySpriteBody;
@@ -62,7 +62,7 @@ public class TiltScreenActivity extends BaseGameActivity implements IOnSceneTouc
 	@Override
 	public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) {
 		// TODO Auto-generated method stub
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
 
 		myTextureAtlas = new BitmapTextureAtlas(getTextureManager(), 1024, 1024);
 
@@ -98,10 +98,10 @@ public class TiltScreenActivity extends BaseGameActivity implements IOnSceneTouc
 		FixtureDef wallFixtures = PhysicsFactory.createFixtureDef(0.0f, 0.0f, 0.0f);
 
 		// Rectangles X, Y, Width, Height, VertextBufferManager
-		Rectangle ground = new Rectangle(0, CAMERA_HEIGHT, CAMERA_WIDTH, 1, this.mEngine.getVertexBufferObjectManager());
-		Rectangle roof = new Rectangle(0, 0, CAMERA_WIDTH, 1, this.mEngine.getVertexBufferObjectManager());
-		Rectangle left = new Rectangle(0, 0, 10, CAMERA_HEIGHT, this.mEngine.getVertexBufferObjectManager());
-		Rectangle right = new Rectangle(CAMERA_WIDTH, 0, 1, CAMERA_HEIGHT, this.getVertexBufferObjectManager());
+		Rectangle ground = new Rectangle(0, CAMERA_HEIGHT, CAMERA_WIDTH * 2, 1, this.mEngine.getVertexBufferObjectManager());
+		Rectangle roof = new Rectangle(0, 0, CAMERA_WIDTH * 2, 1, this.mEngine.getVertexBufferObjectManager());
+		Rectangle left = new Rectangle(0, 0, 10, CAMERA_HEIGHT * 2, this.mEngine.getVertexBufferObjectManager());
+		Rectangle right = new Rectangle(CAMERA_WIDTH, 0, 1, CAMERA_HEIGHT * 2, this.getVertexBufferObjectManager());
 
 		ground.setColor(0, 0, 0);
 		roof.setColor(0, 0, 0);
@@ -144,7 +144,7 @@ public class TiltScreenActivity extends BaseGameActivity implements IOnSceneTouc
 	private void addSprites(float pX, float pY) {
 		// TODO Auto-generated method stub
 
-		FixtureDef spriteFixtureDef = PhysicsFactory.createFixtureDef(10.0f, 0.2f, 0.1f);
+		FixtureDef spriteFixtureDef = PhysicsFactory.createFixtureDef(1.0f, 0.2f, 0.0f);
 
 		mySprite = new Sprite(pX, pY, myBoulderTextureRegion, this.getVertexBufferObjectManager());
 		mySpriteBody = PhysicsFactory.createCircleBody(myPhysicsWorld, mySprite, BodyType.DynamicBody, spriteFixtureDef);
@@ -166,7 +166,7 @@ public class TiltScreenActivity extends BaseGameActivity implements IOnSceneTouc
 		// TODO Auto-generated method stub
 		tiltSpeedX = event.values[1];
 		tiltSpeedY = event.values[0];
-		final Vector2 tiltGravity = Vector2Pool.obtain(tiltSpeedX, tiltSpeedY);
+		final Vector2 tiltGravity = Vector2Pool.obtain(tiltSpeedX * 10, 0);
 		myPhysicsWorld.setGravity(tiltGravity);
 		Vector2Pool.recycle(tiltGravity);
 

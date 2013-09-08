@@ -18,6 +18,10 @@ public abstract class Player extends AnimatedSprite {
 	private boolean canRun = false;
 	private int footContacts = 0;
 
+	private float tiltSpeedX;
+	private float tiltSpeedY;
+	private PhysicsWorld physicsWorld;
+
 	public Player(float pX, float pY, VertexBufferObjectManager vbo, Camera camera, PhysicsWorld physicsWorld) {
 		super(pX, pY, ResourcesManager.getInstance().player_region, vbo);
 		createPhysics(camera, physicsWorld);
@@ -26,8 +30,10 @@ public abstract class Player extends AnimatedSprite {
 
 	public abstract void onDie();
 
-	private void createPhysics(final Camera camera, PhysicsWorld physicsWorld) {
-		body = PhysicsFactory.createBoxBody(physicsWorld, this, BodyType.DynamicBody, PhysicsFactory.createFixtureDef(0, 0, 0));
+	private void createPhysics(final Camera camera, PhysicsWorld physWorld) {
+		this.physicsWorld = physWorld;
+
+		body = PhysicsFactory.createBoxBody(physicsWorld, this, BodyType.DynamicBody, PhysicsFactory.createFixtureDef(10, 0, 0.5f));
 
 		body.setUserData("player");
 		body.setFixedRotation(true);
@@ -42,9 +48,9 @@ public abstract class Player extends AnimatedSprite {
 					onDie();
 				}
 
-				if (canRun) {
-					body.setLinearVelocity(new Vector2(5, body.getLinearVelocity().y));
-				}
+				//				if (canRun) {
+				//					body.setLinearVelocity(new Vector2(5, body.getLinearVelocity().y));
+				//				}
 			}
 		});
 	}

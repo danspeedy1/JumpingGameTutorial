@@ -29,9 +29,11 @@ import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
 import org.andengine.util.level.simple.SimpleLevelLoader;
 import org.xml.sax.Attributes;
 
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -79,6 +81,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Senso
 	private boolean gameOverDisplayed = false;
 
 	private LevelCompleteWindow levelCompleteWindow;
+
+	public static Context context;
+
+	private SensorManager sensorManager;
 
 	@Override
 	public void createScene() {
@@ -135,6 +141,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Senso
 		physicsWorld = new FixedStepPhysicsWorld(60, new Vector2(0, -17), false);
 		physicsWorld.setContactListener(contactListener());
 		registerUpdateHandler(physicsWorld);
+		// Bringing in Tilt Screen Sensor
+		sensorManager = (SensorManager) this.context.getSystemService(Context.SENSOR_SERVICE);
+		sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
+
 	}
 
 	private void loadLevel(int levelID) {
@@ -217,6 +227,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Senso
 								}));
 							}
 						}
+
 					};
 					levelObject = player;
 
@@ -335,7 +346,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Senso
 	public void onSensorChanged(SensorEvent event) {
 		tiltSpeedX = event.values[1];
 		tiltSpeedY = event.values[0];
-		final Vector2 tiltGravity = Vector2Pool.obtain(tiltSpeedX, tiltSpeedY);
+		final Vector2 tiltGravity = Vector2Pool.obtain(tiltSpeedX*5, physicsWorld.getGravity().y);
 		physicsWorld.setGravity(tiltGravity);
 		Vector2Pool.recycle(tiltGravity);
 
