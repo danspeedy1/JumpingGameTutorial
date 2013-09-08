@@ -86,6 +86,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Senso
 
 	private SensorManager sensorManager;
 
+	
+	
 	@Override
 	public void createScene() {
 		createBackground();
@@ -97,9 +99,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Senso
 		setOnSceneTouchListener(this);
 	}
 
-	public void onBackPressed() {
-		SceneManager.getInstance().loadMenuScene(engine);
-	}
 
 	@Override
 	public SceneType getSceneType() {
@@ -111,9 +110,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Senso
 		camera.setHUD(null);
 		camera.setCenter(400, 240);
 		camera.setChaseEntity(null);
+	}
+	
+
+	@Override
+	public void onBackKeyPressed() {
 		SceneManager.getInstance().loadMenuScene(engine);
-		// TODO code responsible for disposing scene
-		// removing all game scene objects.
 	}
 
 	private void createBackground() {
@@ -263,6 +265,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Senso
 			if (!firstTouch) {
 				player.setRunning();
 				firstTouch = true;
+				player.jump();
 			} else {
 				player.jump();
 			}
@@ -270,11 +273,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Senso
 		return false;
 	}
 
-	@Override
-	public void onBackKeyPressed() {
-		// TODO Auto-generated method stub
-
-	}
 
 	private void createGameOverText() {
 		gameOverText = new Text(0, 0, resourcesManager.font, "Game Over!", vbom);
@@ -300,11 +298,16 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Senso
 				}
 
 				if (x1.getBody().getUserData().equals("platform3") && x2.getBody().getUserData().equals("player")) {
-					x1.getBody().setType(BodyType.DynamicBody);
-				}
-
-				if (x1.getBody().getUserData().equals("platform2") && x2.getBody().getUserData().equals("player")) {
 					engine.registerUpdateHandler(new TimerHandler(0.2f, new ITimerCallback() {
+						public void onTimePassed(final TimerHandler pTimerHandler) {
+							pTimerHandler.reset();
+							engine.unregisterUpdateHandler(pTimerHandler);
+							x1.getBody().setType(BodyType.DynamicBody);
+						}
+					}));					
+				}
+				if (x1.getBody().getUserData().equals("platform2") && x2.getBody().getUserData().equals("player")) {
+					engine.registerUpdateHandler(new TimerHandler(0.5f, new ITimerCallback() {
 						public void onTimePassed(final TimerHandler pTimerHandler) {
 							pTimerHandler.reset();
 							engine.unregisterUpdateHandler(pTimerHandler);

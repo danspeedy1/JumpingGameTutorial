@@ -16,11 +16,14 @@ public abstract class Player extends AnimatedSprite {
 
 	private Body body;
 	private boolean canRun = false;
+	boolean stillRunning = true;
 	private int footContacts = 0;
 
 	private float tiltSpeedX;
 	private float tiltSpeedY;
 	private PhysicsWorld physicsWorld;
+	
+	private Float previousPlayerXPos;
 
 	public Player(float pX, float pY, VertexBufferObjectManager vbo, Camera camera, PhysicsWorld physicsWorld) {
 		super(pX, pY, ResourcesManager.getInstance().player_region, vbo);
@@ -32,8 +35,9 @@ public abstract class Player extends AnimatedSprite {
 
 	private void createPhysics(final Camera camera, PhysicsWorld physWorld) {
 		this.physicsWorld = physWorld;
-
-		body = PhysicsFactory.createBoxBody(physicsWorld, this, BodyType.DynamicBody, PhysicsFactory.createFixtureDef(10, 0, 0.5f));
+		
+		body = PhysicsFactory.createBoxBody(physicsWorld, this, BodyType.DynamicBody, PhysicsFactory.createFixtureDef(5f, 0, 1f));
+		previousPlayerXPos = body.getPosition().x;
 
 		body.setUserData("player");
 		body.setFixedRotation(true);
@@ -48,19 +52,25 @@ public abstract class Player extends AnimatedSprite {
 					onDie();
 				}
 
-				//				if (canRun) {
-				//					body.setLinearVelocity(new Vector2(5, body.getLinearVelocity().y));
-				//				}
+//				if(body.getPosition().x==previousPlayerXPos){
+//					stopRunning();
+//				}else{
+//					;
+//				}
+//				
+				previousPlayerXPos = body.getPosition().x;
 			}
 		});
 	}
 
 	public void setRunning() {
-		canRun = true;
-
 		final long[] PLAYER_ANIMATE = new long[] { 100, 100, 100 };
 
 		animate(PLAYER_ANIMATE, 0, 2, true);
+	}
+	
+	public void stopRunning() {
+		stopAnimation();
 	}
 
 	public void jump() {

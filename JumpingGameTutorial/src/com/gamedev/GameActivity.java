@@ -15,6 +15,7 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 
 import com.gamedev.manager.ResourcesManager;
 import com.gamedev.manager.SceneManager;
@@ -74,6 +75,16 @@ public class GameActivity extends BaseGameActivity {
 			}
 		}));
 		pOnPopulateSceneCallback.onPopulateSceneFinished();
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) 
+	{  
+	    if (keyCode == KeyEvent.KEYCODE_BACK)
+	    {
+	        SceneManager.getInstance().getCurrentScene().onBackKeyPressed();
+	    }
+	    return false; 
 	}
 
 }
