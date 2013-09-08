@@ -18,6 +18,7 @@ import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
+import org.andengine.extension.physics.box2d.util.Vector2Pool;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.SAXUtils;
 import org.andengine.util.adt.align.HorizontalAlign;
@@ -27,6 +28,10 @@ import org.andengine.util.level.constants.LevelConstants;
 import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
 import org.andengine.util.level.simple.SimpleLevelLoader;
 import org.xml.sax.Attributes;
+
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -44,13 +49,15 @@ import com.gamedev.extras.LevelCompleteWindow.StarsCount;
 import com.gamedev.manager.SceneManager;
 import com.gamedev.manager.SceneManager.SceneType;
 
-public class GameScene extends BaseScene implements IOnSceneTouchListener {
+public class GameScene extends BaseScene implements IOnSceneTouchListener, SensorEventListener {
 
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_LEVEL_COMPLETE = "levelComplete";
 	private HUD gameHUD;
 	private Text scoreText;
 	private int score = 0;
 	private PhysicsWorld physicsWorld;
+	private float tiltSpeedX;
+	private float tiltSpeedY;
 
 	private static final String TAG_ENTITY = "entity";
 	private static final String TAG_ENTITY_ATTRIBUTE_X = "x";
@@ -316,5 +323,21 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 			}
 		};
 		return contactListener;
+	}
+
+	@Override
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onSensorChanged(SensorEvent event) {
+		tiltSpeedX = event.values[1];
+		tiltSpeedY = event.values[0];
+		final Vector2 tiltGravity = Vector2Pool.obtain(tiltSpeedX, tiltSpeedY);
+		physicsWorld.setGravity(tiltGravity);
+		Vector2Pool.recycle(tiltGravity);
+
 	}
 }
