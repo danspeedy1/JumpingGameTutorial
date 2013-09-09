@@ -16,7 +16,7 @@ public abstract class Player extends AnimatedSprite {
 
 	private Body body;
 	private boolean canRun = false;
-	boolean stillRunning = true;
+	boolean stillRunning = false;
 	private int footContacts = 0;
 
 	private float tiltSpeedX;
@@ -52,24 +52,53 @@ public abstract class Player extends AnimatedSprite {
 					onDie();
 				}
 
-//				if(body.getPosition().x==previousPlayerXPos){
-//					stopRunning();
-//				}else{
-//					;
-//				}
+				animateIfRunning();
+				
+				updateDirection();
 //				
 				previousPlayerXPos = body.getPosition().x;
 			}
+
+			private void updateDirection() {
+			
+				if(body.getPosition().x>previousPlayerXPos){
+					isRightFacing(true);
+				}else if(body.getPosition().x<previousPlayerXPos){
+					isRightFacing(false);
+				}
+				
+			}
+
+
 		});
 	}
+	
+	private void isRightFacing(boolean rightFacing){
+		if(rightFacing){
+			this.setFlippedHorizontal(false);			
+		}else{
+			this.setFlippedHorizontal(true);					
+		}
+	}
 
+
+	private void animateIfRunning() {
+		if(body.getPosition().x==previousPlayerXPos){
+			stopRunning();					
+		}else if(!stillRunning){
+			setRunning();					
+		}
+	}
+	
 	public void setRunning() {
-		final long[] PLAYER_ANIMATE = new long[] { 100, 100, 100 };
-
+		stillRunning=true;
+		final long[] PLAYER_ANIMATE = new long[] { 100, 100, 100 };					
+		
 		animate(PLAYER_ANIMATE, 0, 2, true);
 	}
 	
 	public void stopRunning() {
+		stillRunning = false;
 		stopAnimation();
 	}
 
@@ -77,6 +106,7 @@ public abstract class Player extends AnimatedSprite {
 		if (footContacts < 1) {
 			return;
 		}
+		stopRunning();
 		body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, 12));
 	}
 
